@@ -1,0 +1,48 @@
+<!--
+ * @Author: zhangyu
+ * @Date: 2021-02-20 18:52:03
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>    
+        <meta charset="UTF-8">    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <title>Document</title>
+        </head>
+        <body>    
+            <div id="ball" style="width: 50px;height: 50px;"><div style="width: 50px;height: 50px;background-color:red ;"> </div></div>
+    
+</body>    
+    <script>                   
+            let ball=document.getElementById("ball")  
+            // console.log(ball)   
+            ball.onmousedown = function(event) {       
+                let shiftX = event.clientX - ball.getBoundingClientRect().left;       
+                let shiftY = event.clientY - ball.getBoundingClientRect().top;        
+                ball.style.position = 'absolute';        
+                ball.style.zIndex = 1000;        
+                document.body.append(ball);        
+                moveAt(event.pageX, event.pageY);        
+                // 移动现在位于坐标 (pageX, pageY) 上的球        
+                // 将初始的偏移考虑在内        
+                function moveAt(pageX, pageY) {        
+                    ball.style.left = pageX - shiftX + 'px';        
+                    ball.style.top = pageY - shiftY + 'px';        
+                }        
+                function onMouseMove(event) {        
+                    moveAt(event.pageX, event.pageY);        
+                }        
+                // 在 mousemove 事件上移动球        
+                document.addEventListener('mousemove', onMouseMove);        
+                // 放下球，并移除不需要的处理程序        
+                ball.onmouseup = function() {        
+                    document.removeEventListener('mousemove', onMouseMove);        
+                    ball.onmouseup = null;        
+                };        
+            };       
+            ball.ondragstart = function() {        
+                return false;    
+            };   
+  </script>
+</html>
